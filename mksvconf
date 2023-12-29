@@ -32,7 +32,7 @@ echo "init fetchmailrc"
 
 rm -rf $FETCHMAILBASE
 mkdir -p $FETCHMAILBASE
-cp /etc/supervisord.conf.templ $SVCONF
+sed /etc/supervisord.conf.templ -e 's/${HTTP_USER}/'${HTTP_USER}/ -e 's/${HTTP_PASSWORD}/'${HTTP_PASSWORD}/ >$SVCONF
 
 for i in /data/*
 do
@@ -51,6 +51,9 @@ done
 mkdir /data/log 2>/dev/null
 chown fetchmail.fetchmail /data/log
 chown fetchmail.fetchmail $SVCONF
+
+mkdir -p /var/run/supervisord
+chown fetchmail.fetchmail /var/run/supervisord
 
 rm /tmp/supervisor.sock 2>/dev/null
 
